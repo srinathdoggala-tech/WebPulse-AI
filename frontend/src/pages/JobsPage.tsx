@@ -61,7 +61,7 @@ const JobsPage: React.FC = () => {
       setJobs(res.data);
     } catch (err) {
       console.error("Failed to load jobs", err);
-      // Fallback curated tech jobs
+      // Curated tech jobs fallback
       setJobs([
         {
           id: "j1",
@@ -135,7 +135,6 @@ const JobsPage: React.FC = () => {
       setMatchResults(res.data);
     } catch (err) {
       console.error("Match API failed, computing client-side match", err);
-      // Client-side fallback matching logic
       const textLower = resumeText.toLowerCase();
       const extracted: string[] = [];
       const testSkills = ["python", "rust", "typescript", "react", "fastapi", "docker", "kubernetes", "cuda", "vllm", "mcp", "pytorch", "postgresql", "aws", "next.js", "langchain", "go"];
@@ -171,26 +170,52 @@ const JobsPage: React.FC = () => {
 
   return (
     <div className="container py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold">Job Market Intelligence & Resume ATS Matcher</h1>
-        <p className="text-secondary mt-1">
-          Scraped ATS openings (Greenhouse, Lever, Ashby, LinkedIn) paired with AI-driven skill gap analysis and candidate match scoring
+      {/* Header */}
+      <div style={{ marginBottom: "32px" }}>
+        <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "var(--accent-green)", fontSize: "12px", fontWeight: 600, letterSpacing: "1px", textTransform: "uppercase", marginBottom: "6px" }}>
+          <span>💼 Career Intelligence</span>
+        </div>
+        <h1 style={{ fontSize: "32px", fontWeight: 800, letterSpacing: "-0.5px" }}>Job Market Intelligence & Resume ATS Matcher</h1>
+        <p style={{ color: "var(--text-muted)", fontSize: "14px", marginTop: "4px" }}>
+          Live ATS postings (Greenhouse, Lever, Ashby, LinkedIn) paired with AI skill gap analysis and automated match scoring
         </p>
       </div>
 
       {/* In-Demand Skills Strip */}
-      <div className="card mb-8">
-        <h2 className="text-sm font-semibold uppercase tracking-wider text-secondary mb-3">
-          Top In-Demand Market Skills
-        </h2>
-        <div className="flex flex-wrap gap-2">
+      <div className="glass-card" style={{ marginBottom: "32px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "14px" }}>
+          <h2 style={{ fontSize: "13px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "var(--text-muted)" }}>
+            Top In-Demand Developer Skills Across Active ATS Postings
+          </h2>
+          <span className="badge badge-green">Live Scraped</span>
+        </div>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
           {inDemandSkills.map((item, idx) => (
             <span
               key={idx}
-              className="text-xs px-3 py-1.5 bg-gray-100 border text-gray-800 rounded-full font-medium flex items-center gap-1.5"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                padding: "6px 14px",
+                background: "rgba(255, 255, 255, 0.04)",
+                border: "1px solid var(--bg-card-border)",
+                borderRadius: "9999px",
+                fontSize: "12px",
+                fontWeight: 600,
+                color: "#f8fafc"
+              }}
             >
               <span>{item.skill}</span>
-              <span className="text-xs px-1.5 py-0.2 bg-blue-100 text-blue-700 rounded-full font-bold">
+              <span style={{ 
+                fontSize: "11px", 
+                padding: "2px 8px", 
+                background: "rgba(6, 182, 212, 0.15)", 
+                border: "1px solid rgba(6, 182, 212, 0.3)", 
+                color: "var(--primary)", 
+                borderRadius: "9999px",
+                fontFamily: "var(--font-mono)"
+              }}>
                 {item.count}
               </span>
             </span>
@@ -198,69 +223,101 @@ const JobsPage: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8">
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(360px, 1fr))", gap: "28px", alignItems: "start" }}>
         {/* Left Column: Candidate Resume Input */}
-        <div className="card h-fit">
-          <h2 className="text-xl font-semibold mb-3">Resume & Skills Scanner</h2>
-          <p className="text-xs text-secondary mb-3">
-            Select a preset profile or paste your experience to calculate fit score against active positions:
+        <div className="glass-card">
+          <h2 style={{ fontSize: "18px", fontWeight: 700, marginBottom: "8px" }}>Resume & Skills Scanner</h2>
+          <p style={{ fontSize: "12px", color: "var(--text-muted)", marginBottom: "16px" }}>
+            Select a preset engineering persona or paste your resume/skills to calculate instant alignment:
           </p>
 
-          <div className="flex flex-col gap-2 mb-4">
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px", marginBottom: "16px" }}>
             {PRESETS.map((preset, idx) => (
               <button
                 key={idx}
                 onClick={() => setResumeText(preset.text)}
-                className="text-left text-xs p-2.5 bg-gray-50 hover:bg-blue-50 border rounded-md font-medium text-gray-800 transition-colors"
+                style={{
+                  textAlign: "left",
+                  fontSize: "12px",
+                  padding: "10px 14px",
+                  background: "rgba(255, 255, 255, 0.03)",
+                  border: "1px solid var(--bg-card-border)",
+                  borderRadius: "var(--radius-sm)",
+                  color: "#cbd5e1",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  transition: "all 0.2s"
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "rgba(6, 182, 212, 0.1)";
+                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(6, 182, 212, 0.3)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "rgba(255, 255, 255, 0.03)";
+                  (e.currentTarget as HTMLElement).style.borderColor = "var(--bg-card-border)";
+                }}
               >
-                {preset.title}
+                ⚡ {preset.title}
               </button>
             ))}
           </div>
 
           <textarea
-            rows={8}
+            rows={7}
             value={resumeText}
             onChange={(e) => setResumeText(e.target.value)}
-            placeholder="Paste your resume summary or skills here..."
-            className="w-full text-xs font-mono p-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary mb-4 bg-gray-50"
+            placeholder="Paste your technical resume summary or skills here..."
+            className="form-input"
+            style={{ 
+              fontFamily: "var(--font-mono)", 
+              fontSize: "12px", 
+              resize: "vertical", 
+              marginBottom: "16px",
+              lineHeight: 1.5
+            }}
           />
 
           <button
             onClick={handleMatch}
             disabled={isMatching}
-            className="w-full py-2.5 bg-primary text-white font-semibold rounded-md shadow hover:bg-primary/90 disabled:opacity-50"
+            className="btn-primary"
+            style={{ width: "100%", padding: "12px", fontSize: "14px" }}
           >
-            {isMatching ? "Analyzing Alignment..." : "Run Skill & Gap Matcher"}
+            {isMatching ? "Analyzing ATS Fit..." : "⚡ Calculate Skill & Gap Match"}
           </button>
         </div>
 
         {/* Right Column: Match Analysis & Jobs List */}
-        <div className="lg:col-span-2 flex flex-col gap-6">
+        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
           {matchResults && (
-            <div className="card bg-gradient-to-r from-blue-50 to-emerald-50 border-blue-200">
-              <div className="flex justify-between items-center mb-4">
+            <div className="glass-card" style={{ 
+              background: "linear-gradient(135deg, rgba(6, 182, 212, 0.12), rgba(139, 92, 246, 0.12))",
+              border: "1px solid rgba(6, 182, 212, 0.35)"
+            }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
                 <div>
-                  <span className="text-xs font-semibold uppercase tracking-wider text-secondary">
-                    Market Alignment Score
+                  <span style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", color: "var(--primary)" }}>
+                    ATS Alignment Result
                   </span>
-                  <div className="text-2xl font-bold text-gray-900 mt-1">
+                  <div style={{ fontSize: "20px", fontWeight: 800, marginTop: "2px" }}>
                     Level: {matchResults.seniority_estimate}
                   </div>
                 </div>
-                <div className="text-right">
-                  <div className="text-4xl font-extrabold text-primary">
+                <div style={{ textAlign: "right" }}>
+                  <div style={{ fontSize: "36px", fontWeight: 800, fontFamily: "var(--font-mono)", color: "var(--primary)", lineHeight: 1 }}>
                     {matchResults.overall_market_fit}%
                   </div>
-                  <div className="text-xs font-medium text-green-700">Top ATS Match</div>
+                  <div style={{ fontSize: "11px", fontWeight: 600, color: "#34d399", marginTop: "4px" }}>Top Job Match</div>
                 </div>
               </div>
 
               <div>
-                <span className="text-xs font-semibold text-secondary">Extracted Profile Skills:</span>
-                <div className="flex flex-wrap gap-1.5 mt-1.5">
+                <span style={{ fontSize: "11px", fontWeight: 600, color: "var(--text-muted)", textTransform: "uppercase" }}>
+                  Extracted Profile Skills:
+                </span>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginTop: "8px" }}>
                   {matchResults.extracted_skills?.map((sk: string, i: number) => (
-                    <span key={i} className="text-xs px-2 py-0.5 bg-green-100 text-green-800 font-semibold rounded">
+                    <span key={i} className="badge badge-green">
                       ✓ {sk}
                     </span>
                   ))}
@@ -269,84 +326,94 @@ const JobsPage: React.FC = () => {
             </div>
           )}
 
-          <div className="card">
-            <h2 className="text-xl font-semibold mb-4">
+          <div className="glass-card">
+            <h2 style={{ fontSize: "18px", fontWeight: 700, marginBottom: "16px" }}>
               {matchResults ? "Matching Engineering Positions" : "Live Job Openings"}
             </h2>
 
-            <div className="flex flex-col gap-6">
+            <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
               {(matchResults ? matchResults.top_matches : jobs.map((j) => ({ job: j, match_score: null }))).map(
                 (item: any, idx: number) => {
                   const job: Job = item.job || item;
                   const score = item.match_score;
                   return (
-                    <div key={job.id || idx} className="p-4 border rounded-lg hover:shadow-sm transition-shadow">
-                      <div className="flex justify-between items-start gap-4 mb-2">
+                    <div 
+                      key={job.id || idx} 
+                      style={{ 
+                        padding: "18px", 
+                        background: "rgba(255, 255, 255, 0.02)", 
+                        border: "1px solid var(--bg-card-border)", 
+                        borderRadius: "var(--radius-sm)",
+                        transition: "all 0.2s"
+                      }}
+                    >
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "16px", marginBottom: "10px" }}>
                         <div>
-                          <h3 className="text-lg font-bold text-gray-900">{job.title}</h3>
-                          <div className="text-sm font-medium text-primary">
+                          <h3 style={{ fontSize: "16px", fontWeight: 700, color: "#fff" }}>{job.title}</h3>
+                          <div style={{ fontSize: "13px", fontWeight: 500, color: "var(--primary)", marginTop: "2px" }}>
                             {job.company} • {job.location}
                           </div>
                         </div>
 
                         {score !== null && score !== undefined ? (
-                          <span className={`text-sm px-3 py-1 font-bold rounded-full border ${
-                            score >= 65 
-                              ? "bg-green-100 text-green-800 border-green-300" 
-                              : "bg-amber-100 text-amber-800 border-amber-300"
-                          }`}>
+                          <span className={`badge ${score >= 65 ? "badge-green" : "badge-amber"}`} style={{ fontSize: "12px", padding: "4px 10px" }}>
                             {score}% Match
                           </span>
                         ) : (
-                          <span className="text-xs px-2.5 py-1 bg-gray-100 text-gray-700 rounded-full font-medium">
+                          <span className="badge badge-cyan">
                             {job.source}
                           </span>
                         )}
                       </div>
 
-                      <div className="flex flex-wrap gap-4 text-xs text-secondary my-2">
-                        {job.salary && <span className="font-semibold text-green-700">💰 {job.salary}</span>}
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: "12px", fontSize: "12px", color: "var(--text-muted)", margin: "10px 0" }}>
+                        {job.salary && <span style={{ color: "#34d399", fontWeight: 600 }}>💰 {job.salary}</span>}
                         <span>💼 {job.type}</span>
                         <span>🏷️ {job.source}</span>
                       </div>
 
-                      <p className="text-sm text-gray-700 my-3">{job.description}</p>
+                      <p style={{ fontSize: "13px", color: "var(--text-muted)", margin: "10px 0", lineHeight: 1.5 }}>
+                        {job.description}
+                      </p>
 
                       {/* Matched & Missing Skills Pills */}
                       {item.matched_skills ? (
-                        <div className="my-3">
-                          <div className="flex flex-wrap gap-1.5 mb-1.5">
+                        <div style={{ margin: "12px 0" }}>
+                          <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "8px" }}>
                             {item.matched_skills.map((ms: string, mi: number) => (
-                              <span key={mi} className="text-xs px-2 py-0.5 bg-green-100 text-green-800 rounded font-medium">
+                              <span key={mi} className="badge badge-green" style={{ fontSize: "11px" }}>
                                 ✓ {ms}
                               </span>
                             ))}
                             {item.missing_skills.map((mis: string, misi: number) => (
-                              <span key={misi} className="text-xs px-2 py-0.5 bg-red-100 text-red-700 rounded font-medium">
+                              <span key={misi} className="badge badge-red" style={{ fontSize: "11px" }}>
                                 ✕ {mis}
                               </span>
                             ))}
                           </div>
                           {item.recommendation && (
-                            <p className="text-xs text-secondary italic mt-1">{item.recommendation}</p>
+                            <p style={{ fontSize: "12px", color: "var(--primary)", fontStyle: "italic", marginTop: "4px" }}>
+                              💡 {item.recommendation}
+                            </p>
                           )}
                         </div>
                       ) : (
-                        <div className="flex flex-wrap gap-1.5 my-3">
+                        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", margin: "12px 0" }}>
                           {job.skills?.map((sk, ski) => (
-                            <span key={ski} className="text-xs px-2 py-0.5 bg-gray-100 text-gray-700 rounded">
+                            <span key={ski} style={{ fontSize: "11px", padding: "3px 8px", background: "rgba(255, 255, 255, 0.06)", borderRadius: "4px", color: "var(--text-muted)" }}>
                               {sk}
                             </span>
                           ))}
                         </div>
                       )}
 
-                      <div className="flex justify-end mt-3 pt-3 border-t">
+                      <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "14px", paddingTop: "12px", borderTop: "1px solid var(--bg-card-border)" }}>
                         <a
                           href={job.url}
                           target="_blank"
                           rel="noreferrer"
-                          className="px-4 py-1.5 bg-primary text-white text-xs font-semibold rounded hover:bg-primary/90"
+                          className="btn-primary"
+                          style={{ padding: "8px 16px", fontSize: "12px" }}
                         >
                           View Job Details & Apply →
                         </a>

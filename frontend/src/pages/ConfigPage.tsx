@@ -70,101 +70,134 @@ const ConfigPage: React.FC = () => {
 
   return (
     <div className="container py-8">
-      <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
+      {/* Header & Trigger */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "20px", marginBottom: "32px" }}>
         <div>
-          <h1 className="text-3xl font-bold">Data Sources & System Configuration</h1>
-          <p className="text-secondary mt-1">
-            Configure collector poll frequencies, enable/disable web sources, and trigger real-time scraping
+          <div style={{ display: "inline-flex", alignItems: "center", gap: "6px", color: "var(--primary)", fontSize: "12px", fontWeight: 600, letterSpacing: "1px", textTransform: "uppercase", marginBottom: "6px" }}>
+            <span>⚙️ Pipeline Control</span>
+          </div>
+          <h1 style={{ fontSize: "32px", fontWeight: 800, letterSpacing: "-0.5px" }}>Data Sources & Ingestion Orchestration</h1>
+          <p style={{ color: "var(--text-muted)", fontSize: "14px", marginTop: "4px" }}>
+            Configure scraper poll schedules, enable/disable connected web sources, and trigger immediate manual ingestion
           </p>
         </div>
 
         <button
           onClick={handleTriggerScrape}
           disabled={triggering}
-          className="px-5 py-2.5 bg-primary text-white font-semibold rounded-md shadow hover:bg-primary/90 disabled:opacity-50 flex items-center gap-2"
+          className="btn-primary"
+          style={{ padding: "12px 24px" }}
         >
-          {triggering ? "Running Collectors..." : "Trigger Manual Scrape"}
+          {triggering ? "⚡ Ingestion Running..." : "🚀 Trigger Manual Scrape"}
         </button>
       </div>
 
       {message && (
-        <div className="p-4 mb-6 bg-blue-50 text-blue-800 rounded-md border border-blue-200">
-          {message}
+        <div style={{ 
+          padding: "14px 18px", 
+          marginBottom: "24px", 
+          background: "rgba(6, 182, 212, 0.12)", 
+          border: "1px solid rgba(6, 182, 212, 0.35)", 
+          borderRadius: "var(--radius-sm)", 
+          color: "var(--primary)", 
+          fontSize: "13px",
+          display: "flex",
+          alignItems: "center",
+          gap: "8px"
+        }}>
+          <span>ℹ️</span> {message}
         </div>
       )}
 
-      {/* System Health Status */}
-      <div className="card mb-8">
-        <h2 className="text-xl font-semibold mb-4">Pipeline Telemetry & Health</h2>
-        <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-4">
-          <div className="p-4 bg-gray-50 rounded-lg border">
-            <div className="text-xs text-secondary uppercase font-semibold">Engine Status</div>
-            <div className="text-lg font-bold text-green-600 mt-1 flex items-center gap-2">
-              <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse"></span>
+      {/* System Health Status Grid */}
+      <div className="glass-card" style={{ marginBottom: "32px" }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+          <h2 style={{ fontSize: "18px", fontWeight: 700 }}>Collector Pipeline Telemetry</h2>
+          <span className="badge badge-green">Healthy</span>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "16px" }}>
+          <div style={{ padding: "16px", background: "rgba(0,0,0,0.25)", borderRadius: "var(--radius-sm)", border: "1px solid var(--bg-card-border)" }}>
+            <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600 }}>Engine Status</div>
+            <div style={{ fontSize: "18px", fontWeight: 800, color: "#34d399", marginTop: "6px", display: "flex", alignItems: "center", gap: "8px" }}>
+              <span className="pulse-dot-anim"></span>
               {health?.status || "Online"}
             </div>
           </div>
 
-          <div className="p-4 bg-gray-50 rounded-lg border">
-            <div className="text-xs text-secondary uppercase font-semibold">Background Worker</div>
-            <div className="text-lg font-bold text-primary mt-1">
+          <div style={{ padding: "16px", background: "rgba(0,0,0,0.25)", borderRadius: "var(--radius-sm)", border: "1px solid var(--bg-card-border)" }}>
+            <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600 }}>Background Worker</div>
+            <div style={{ fontSize: "18px", fontWeight: 800, color: "var(--primary)", marginTop: "6px" }}>
               {health?.running ? "Active (5m Interval)" : "Ready"}
             </div>
           </div>
 
-          <div className="p-4 bg-gray-50 rounded-lg border">
-            <div className="text-xs text-secondary uppercase font-semibold">Total Raw Signals</div>
-            <div className="text-lg font-bold text-gray-900 mt-1">
+          <div style={{ padding: "16px", background: "rgba(0,0,0,0.25)", borderRadius: "var(--radius-sm)", border: "1px solid var(--bg-card-border)" }}>
+            <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600 }}>Processed Signals</div>
+            <div style={{ fontSize: "18px", fontWeight: 800, fontFamily: "var(--font-mono)", color: "#fff", marginTop: "6px" }}>
               {health?.stats?.total_items || 2340} items
             </div>
           </div>
 
-          <div className="p-4 bg-gray-50 rounded-lg border">
-            <div className="text-xs text-secondary uppercase font-semibold">Last Execution</div>
-            <div className="text-sm font-semibold text-gray-700 mt-1 truncate">
+          <div style={{ padding: "16px", background: "rgba(0,0,0,0.25)", borderRadius: "var(--radius-sm)", border: "1px solid var(--bg-card-border)" }}>
+            <div style={{ fontSize: "11px", color: "var(--text-muted)", textTransform: "uppercase", fontWeight: 600 }}>Last Execution</div>
+            <div style={{ fontSize: "14px", fontWeight: 700, color: "var(--text-muted)", marginTop: "8px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
               {health?.last_collection 
                 ? new Date(health.last_collection).toLocaleTimeString() 
-                : "Continuous"}
+                : "Continuous Poll"}
             </div>
           </div>
         </div>
       </div>
 
       {/* Configured Data Sources */}
-      <div className="card">
-        <h2 className="text-xl font-semibold mb-4">Configured Source Collectors</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead className="border-b bg-gray-50">
-              <tr className="text-left text-secondary font-medium">
-                <th className="py-3 px-3">Data Source</th>
-                <th className="py-3 px-3">Description</th>
-                <th className="py-3 px-3 text-center">Frequency</th>
-                <th className="py-3 px-3 text-center">Status</th>
-                <th className="py-3 px-3 text-right">Action</th>
+      <div className="glass-card">
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+          <div>
+            <h2 style={{ fontSize: "18px", fontWeight: 700 }}>Configured Ingestion Collectors</h2>
+            <p style={{ fontSize: "12px", color: "var(--text-muted)", marginTop: "2px" }}>Toggle scrapers and configure polling intervals</p>
+          </div>
+          <span className="badge badge-cyan">{sources.length} Configured</span>
+        </div>
+
+        <div className="table-wrap">
+          <table className="modern-table">
+            <thead>
+              <tr>
+                <th>Data Source</th>
+                <th>Description</th>
+                <th style={{ textAlign: "center" }}>Frequency</th>
+                <th style={{ textAlign: "center" }}>Status</th>
+                <th style={{ textAlign: "right" }}>Toggle</th>
               </tr>
             </thead>
             <tbody>
               {sources.map((src) => (
-                <tr key={src.type} className="border-b last:border-0 hover:bg-gray-50">
-                  <td className="py-3 px-3 font-semibold text-gray-900">{src.name}</td>
-                  <td className="py-3 px-3 text-secondary">{src.description}</td>
-                  <td className="py-3 px-3 text-center font-medium">Every {src.frequency_minutes}m</td>
-                  <td className="py-3 px-3 text-center">
-                    <span className={`text-xs px-2.5 py-1 rounded-full font-semibold ${
-                      src.enabled ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"
-                    }`}>
+                <tr key={src.type}>
+                  <td style={{ fontWeight: 700, color: "#fff" }}>{src.name}</td>
+                  <td style={{ color: "var(--text-muted)", fontSize: "13px" }}>{src.description}</td>
+                  <td style={{ textAlign: "center", fontFamily: "var(--font-mono)", fontSize: "12px" }}>
+                    Every {src.frequency_minutes}m
+                  </td>
+                  <td style={{ textAlign: "center" }}>
+                    <span className={`badge ${src.enabled ? "badge-green" : "badge-amber"}`}>
                       {src.enabled ? "Active" : "Disabled"}
                     </span>
                   </td>
-                  <td className="py-3 px-3 text-right">
+                  <td style={{ textAlign: "right" }}>
                     <button
                       onClick={() => handleToggle(src.type)}
-                      className={`px-3 py-1 text-xs font-semibold rounded border transition-colors ${
-                        src.enabled 
-                          ? "bg-red-50 text-red-600 border-red-200 hover:bg-red-100" 
-                          : "bg-green-50 text-green-600 border-green-200 hover:bg-green-100"
-                      }`}
+                      style={{
+                        padding: "6px 14px",
+                        fontSize: "12px",
+                        fontWeight: 600,
+                        borderRadius: "6px",
+                        cursor: "pointer",
+                        transition: "all 0.2s",
+                        background: src.enabled ? "rgba(239, 68, 68, 0.15)" : "rgba(16, 185, 129, 0.15)",
+                        border: src.enabled ? "1px solid rgba(239, 68, 68, 0.3)" : "1px solid rgba(16, 185, 129, 0.3)",
+                        color: src.enabled ? "#f87171" : "#34d399"
+                      }}
                     >
                       {src.enabled ? "Disable" : "Enable"}
                     </button>
