@@ -1,6 +1,11 @@
 # WebPulse AI: Real-Time Web Trend & Intelligence Tracker
 > **Autonomous Community Intelligence & Opportunity Radar**: Multi-source web scraping, statistical topic velocity tracking, AI sentiment & categorization, and ATS resume skill-gap matching.
 
+[![Vercel Deployment](https://img.shields.io/badge/Vercel-Live%20Demo-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://frontend-woad-one-33.vercel.app)
+[![Repository](https://img.shields.io/badge/GitHub-WebPulse--AI-181717?style=for-the-badge&logo=github)](https://github.com/srinathdoggala-tech/WebPulse-AI)
+
+🌐 **Live Production App**: [https://frontend-woad-one-33.vercel.app](https://frontend-woad-one-33.vercel.app)
+
 ---
 
 ## 🌟 Overview & Emergent Demonstration Signals
