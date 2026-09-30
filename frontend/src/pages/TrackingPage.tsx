@@ -113,7 +113,6 @@ const TrackingPage: React.FC = () => {
                     fontSize: "12px",
                     fontWeight: 600,
                     borderRadius: "6px",
-                    border: "none",
                     cursor: "pointer",
                     transition: "all 0.2s",
                     background: isActive ? "rgba(6, 182, 212, 0.2)" : "transparent",
