@@ -25,74 +25,138 @@ Rather than relying on opaque LLM predictions to guess "what is trending", WebPu
 ## 🏛️ System Architecture
 
 ```mermaid
-graph TD
-    subgraph Sources [External Web & Community Sources]
-        HN[Hacker News API]
-        GH[GitHub Trending API]
-        RD[Reddit Tech Subreddits]
-        RSS[ArXiv & Tech News RSS]
-        JOB[ATS Feeds Greenhouse / Lever]
+flowchart TB
+    %% WebPulse AI Full-Stack Production Architecture
+
+    subgraph INGESTION ["🌐 1. Multi-Source Ingestion Layer"]
+        direction LR
+        HN["🔥 Hacker News<br/><i>(Firebase REST API)</i>"]
+        GH["🐙 GitHub Developer Trends<br/><i>(Search & Repo API)</i>"]
+        RD["💬 Reddit Communities<br/><i>(Subreddit JSON Feeds)</i>"]
+        RSS["📰 Tech News & ArXiv<br/><i>(XML/Atom RSS Feeds)</i>"]
+        ATS["💼 Enterprise ATS Boards<br/><i>(Greenhouse, Lever, Ashby)</i>"]
     end
 
-    subgraph Collectors [Python Collectors Engine]
-        C1[HackerNewsCollector]
-        C2[GitHubCollector]
-        C3[RedditCollector]
-        C4[RssNewsCollector]
-        C5[JobBoardCollector]
+    subgraph COLLECTORS ["⚙️ 2. Asynchronous Ingestion Engine"]
+        direction LR
+        C_HN["HackerNewsCollector"]
+        C_GH["GitHubCollector"]
+        C_RD["RedditCollector"]
+        C_RSS["RssNewsCollector"]
+        C_ATS["JobBoardCollector"]
     end
 
-    subgraph Pipeline [Normalization & Deduplication]
-        NORM[PipelineNormalizer]
-        DEDUP[PipelineDeduplicator SHA-256]
+    subgraph PIPELINE ["🛡️ 3. Normalization & Sanitization Pipeline"]
+        NORM["PipelineNormalizer<br/>• Title Sanitization<br/>• HTML Stripping<br/>• Canonical Schema Mapping"]
+        DEDUP["PipelineDeduplicator<br/>• SHA-256 Content Hashing<br/>• Temporal Deduplication<br/>• URL Canonicalization"]
     end
 
-    subgraph AI [AI & Tracking Engine]
-        EXTR[Topic & Entity Extractor]
-        SENT[Sentiment Analyzer]
-        SCORE[Trend Velocity Scorer]
-        SUMM[AI Executive Summarizer]
-        MATCH[Resume Skill & Gap Matcher]
+    subgraph DUAL_CORE ["🧠 4. Decoupled Dual-Core Intelligence Engine"]
+        subgraph STATS ["📊 Statistical Trend Measurement Engine"]
+            VEL["Topic Velocity Engine<br/><i>(% 24h Acceleration vs Baseline)</i>"]
+            REC["Recency Decay Scorer<br/><i>(Exponential Half-Life e^-λt)</i>"]
+            DIV["Source Diversity Calculator<br/><i>(Cross-Platform Multiplier)</i>"]
+            NOVEL["Novelty & Outlier Detector<br/><i>(Spike Anomaly Flagging)</i>"]
+        end
+
+        subgraph NLP ["🤖 Semantic NLP & ATS Intelligence"]
+            ENT["Entity & Topic Extractor<br/><i>(Technical Keyword Clustering)</i>"]
+            SENT["Sentiment Polarity Engine<br/><i>(Community Polarity Index)</i>"]
+            SUMM["AI Digest Synthesizer<br/><i>(Shift Briefing Generator)</i>"]
+            ATS_MATCH["ATS Skill Gap Matcher<br/><i>(Candidate Profile Scorer)</i>"]
+        end
     end
 
-    subgraph Storage [Persistence Layer]
-        DB[(SQLite trendradar.db)]
+    subgraph STORAGE ["💾 5. Persistence & Historical State (SQLite)"]
+        DB_RAW[("raw_signals<br/><i>Unprocessed payloads</i>")]
+        DB_TRENDS[("topic_trends<br/><i>Computed velocities & scores</i>")]
+        DB_SNAP[("historical_snapshots<br/><i>Time-series 30d trajectories</i>")]
+        DB_JOBS[("job_postings<br/><i>ATS roles & required skills</i>")]
     end
 
-    subgraph API [FastAPI Service]
-        R1[/api/trends & /rising]
-        R2[/api/feed]
-        R3[/api/jobs & /match]
-        R4[/api/stats & /summary]
-        R5[/api/collect/trigger]
+    subgraph API_GATEWAY ["⚡ 6. FastAPI High-Performance Gateway"]
+        direction TB
+        E1["/api/trends & /api/trends/rising<br/><i>Real-time scores & velocity spikes</i>"]
+        E2["/api/tracking/comparison & /history<br/><i>Multi-topic longitudinal metrics</i>"]
+        E3["/api/jobs & /api/jobs/match<br/><i>ATS postings & resume skill alignment</i>"]
+        E4["/api/sources & /api/health<br/><i>Scraper polling & worker telemetry</i>"]
+        E5["/api/collect/trigger<br/><i>Manual pipeline execution dispatcher</i>"]
     end
 
-    subgraph UI [React Dashboard]
-        V1[Trending Radar View]
-        V2[Velocity Spikes View]
-        V3[Interactive Resume Matcher]
-        V4[Unified Live Feed]
-        V5[Executive AI Digest]
-        V6[Source Analytics]
+    subgraph CLIENT ["🖥️ 7. React Glassmorphic Client (Vite + Vanilla CSS)"]
+        direction TB
+        P_NAV["Sticky Frosted Navbar<br/>• Glowing Radar Brand • Active Route Pills • Live Health Status"]
+        
+        subgraph PAGES ["7 Interactive Product Views"]
+            direction LR
+            V_HOME["HomePage<br/><i>KPI Cards & Launchpad</i>"]
+            V_DASH["DashboardPage<br/><i>Volume Telemetry</i>"]
+            V_TREND["TrendingPage<br/><i>Radar & Inspector</i>"]
+            V_RISE["RisingPage<br/><i>Breakout Matrix</i>"]
+            V_TRACK["TrackingPage<br/><i>Trajectories</i>"]
+            V_JOBS["JobsPage<br/><i>ATS Resume Scanner</i>"]
+            V_CONF["ConfigPage<br/><i>Orchestration</i>"]
+        end
     end
 
-    HN --> C1
-    GH --> C2
-    RD --> C3
-    RSS --> C4
-    JOB --> C5
+    %% Ingestion to Collectors
+    HN --> C_HN
+    GH --> C_GH
+    RD --> C_RD
+    RSS --> C_RSS
+    ATS --> C_ATS
 
-    C1 & C2 & C3 & C4 --> NORM --> DEDUP --> DB
-    C5 --> DB
+    %% Collectors to Pipeline
+    C_HN & C_GH & C_RD & C_RSS --> NORM
+    C_ATS --> NORM
+    NORM --> DEDUP
 
-    DB --> EXTR --> SCORE --> DB
-    DB --> SENT --> SCORE
-    DB --> SUMM
-    DB --> MATCH
+    %% Pipeline to Persistence
+    DEDUP --> DB_RAW
+    DEDUP --> DB_JOBS
 
-    DB --> API
-    API --> UI
+    %% Raw to Dual Core Intelligence
+    DB_RAW --> VEL & REC & DIV & NOVEL
+    DB_RAW --> ENT & SENT & SUMM
+    DB_JOBS --> ATS_MATCH
+
+    %% Intelligence to Processed Tables
+    VEL & REC & DIV & NOVEL --> DB_TRENDS
+    ENT & SENT --> DB_TRENDS
+    DB_TRENDS --> DB_SNAP
+
+    %% Persistence to API Gateway
+    DB_TRENDS & DB_SNAP & DB_JOBS & DB_RAW --> API_GATEWAY
+
+    %% API Gateway to Client
+    API_GATEWAY <==> CLIENT
 ```
+
+### 🔄 End-to-End Dataflow Lifecycle
+
+```
+[External Web APIs]
+       │
+       ▼ (Asynchronous Collectors)
+[Ingestion Normalizer & SHA-256 Deduplication]
+       │
+       ▼ (Raw Signal Ingestion)
+[Persistence Layer (SQLite DB)]
+       │
+       ├──► [Statistical Velocity Engine]  ──────► (Computes Volume, Recency Decay, Cross-Source Multiplier)
+       │                                                                  │
+       └──► [Semantic NLP / ATS Analyzer]  ──────► (Extracts Entities, Sentiment Polarity, Skill Profiles)
+                                                                          │
+                                                                          ▼
+                                                       [Consolidated Trend Matrix]
+                                                                          │
+                                                                          ▼
+                                                       [FastAPI High-Speed REST API]
+                                                                          │
+                                                                          ▼
+                                            [Vite React Glassmorphic Client (7 Surfaces)]
+```
+
 
 ---
 
@@ -141,24 +205,24 @@ TrendRadar-AI/
 │
 ├── frontend/
 │   ├── src/
-│   │   ├── components/
-│   │   │   ├── Header.jsx           # Brand logo, pulse badge, navigation
-│   │   │   ├── TrendingRadar.jsx    # Trending grid, category filters, detail modal
-│   │   │   ├── RisingTopics.jsx     # Breakout acceleration (>120% velocity)
-│   │   │   ├── JobMatcher.jsx       # Interactive resume analyzer & gap visualizer
-│   │   │   ├── UnifiedFeed.jsx      # Multi-source stream with direct search
-│   │   │   ├── AIDigest.jsx         # Executive tech briefing & breakthroughs
-│   │   │   └── AnalyticsView.jsx    # Source volume, category, & sentiment charts
-│   │   ├── services/
-│   │   │   └── api.js               # Client API connector with fallback support
-│   │   ├── App.jsx                  # Main application state & notification toast
-│   │   ├── index.css                # Dark glassmorphic design system
-│   │   └── main.jsx
+│   │   ├── pages/
+│   │   │   ├── HomePage.tsx         # Launchpad, KPI stats cards, architectural pillars
+│   │   │   ├── DashboardPage.tsx    # Telemetry stat cards, volume & category Recharts
+│   │   │   ├── TrendingPage.tsx     # Trending radar, search filters, interactive topic inspector
+│   │   │   ├── RisingPage.tsx       # Breakout acceleration (>120% velocity) & window selector
+│   │   │   ├── TrackingPage.tsx     # Comparative trajectory line graphs & novelty classifier
+│   │   │   ├── JobsPage.tsx         # ATS job openings & candidate resume skill gap scanner
+│   │   │   └── ConfigPage.tsx       # Scraper frequency controls & collector orchestration
+│   │   ├── App.tsx                  # Sticky frosted navbar, route management & pulse badge
+│   │   ├── index.css                # Zero-dependency Vanilla CSS Glassmorphic Design System
+│   │   └── main.tsx                 # React DOM client entry point
 │   ├── index.html
 │   ├── package.json
-│   └── vite.config.js
+│   ├── tsconfig.json
+│   └── vite.config.ts
 │
 └── README.md
+
 ```
 
 ---
