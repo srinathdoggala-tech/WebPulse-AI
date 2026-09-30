@@ -4,19 +4,25 @@ import { Link } from "react-router-dom";
 const HomePage: React.FC = () => {
   return (
     <div className="container py-12">
-      <h1 className="text-3xl font-bold mb-6 text-center">
-        Welcome to TrendRadar-AI
-      </h1>
+      <div className="text-center mb-10">
+        <h1 className="text-4xl font-extrabold mb-3 text-gray-900 tracking-tight">
+          WebPulse AI
+        </h1>
+        <p className="text-lg text-secondary max-w-2xl mx-auto">
+          Real-Time Web Trend & Intelligence Tracker — Multi-Source Ingestion, Topic Velocity, and ATS Skill Matching
+        </p>
+      </div>
+
       <div className="grid md:grid-cols-2 gap-8">
         <div className="p-6 bg-white rounded-lg shadow border">
-          <h2 className="text-xl font-semibold mb-4">What is TrendRadar-AI?</h2>
-          <p className="mb-4">
-            TrendRadar-AI is an AI-powered community intelligence platform that
-            collects, analyzes, and visualizes trends from multiple data sources
-            including Hacker News, Reddit, GitHub, job boards, and RSS feeds.
+          <h2 className="text-xl font-semibold mb-4">What is WebPulse AI?</h2>
+          <p className="mb-4 text-gray-700 leading-relaxed">
+            WebPulse AI is a full-stack community intelligence platform that
+            collects, normalizes, and visualizes developer trends from multiple data sources
+            including Hacker News, Reddit, GitHub, ATS job boards, and RSS feeds.
           </p>
-          <Link to="/dashboard" className="inline-block bg-primary text-white px-4 py-2 rounded hover:bg-primary/90">
-            Explore Dashboard
+          <Link to="/dashboard" className="inline-block bg-primary text-white px-4 py-2 rounded hover:bg-primary/90 font-medium">
+            Explore Dashboard →
           </Link>
         </div>
 

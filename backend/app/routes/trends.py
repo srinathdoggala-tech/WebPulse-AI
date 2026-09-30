@@ -47,6 +47,7 @@ def get_trends(
             mention_count=r["mention_count"],
             sources=json.loads(r["sources"]) if r["sources"] else [],
             summary=r["summary"] or "",
+            opportunity_signal=r["opportunity_signal"] if "opportunity_signal" in r.keys() and r["opportunity_signal"] else "",
             is_rising=bool(r["is_rising"]),
             updated_at=r["updated_at"]
         ))
@@ -72,6 +73,7 @@ def get_rising_trends(limit: int = 10):
             mention_count=r["mention_count"],
             sources=json.loads(r["sources"]) if r["sources"] else [],
             summary=r["summary"] or "",
+            opportunity_signal=r["opportunity_signal"] if "opportunity_signal" in r.keys() and r["opportunity_signal"] else "",
             is_rising=True,
             updated_at=r["updated_at"]
         ))
@@ -111,6 +113,7 @@ def get_trend_detail(trend_id: str):
         mention_count=r["mention_count"],
         sources=json.loads(r["sources"]) if r["sources"] else [],
         summary=r["summary"] or "",
+        opportunity_signal=r["opportunity_signal"] if "opportunity_signal" in r.keys() and r["opportunity_signal"] else "",
         is_rising=bool(r["is_rising"]),
         related_items=related_items,
         updated_at=r["updated_at"]

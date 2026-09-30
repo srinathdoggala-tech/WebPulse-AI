@@ -45,10 +45,20 @@ def init_db():
         mention_count INTEGER DEFAULT 1,
         sources TEXT, -- JSON array
         summary TEXT,
+        opportunity_signal TEXT,
         is_rising INTEGER DEFAULT 0,
         updated_at DATETIME NOT NULL
     )
     """)
+
+    # Safe migration for existing databases
+    cursor.execute("PRAGMA table_info(trends)")
+    columns = [col[1] for col in cursor.fetchall()]
+    if "opportunity_signal" not in columns:
+        try:
+            cursor.execute("ALTER TABLE trends ADD COLUMN opportunity_signal TEXT")
+        except Exception:
+            pass
 
     # Table for job postings
     cursor.execute("""

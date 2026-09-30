@@ -26,6 +26,7 @@ class TrendTopic(BaseModel):
     mention_count: int
     sources: List[str]
     summary: str
+    opportunity_signal: Optional[str] = ""
     is_rising: bool = False
     related_items: List[Dict[str, Any]] = []
     updated_at: datetime = Field(default_factory=datetime.utcnow)

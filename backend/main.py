@@ -94,8 +94,8 @@ async def collect_from_all_sources():
 
 # Create FastAPI app
 app = FastAPI(
-    title="TrendRadar-AI API",
-    description="AI-powered trend intelligence & opportunity radar",
+    title="WebPulse AI API",
+    description="Real-Time Web Trend & Intelligence Tracker: Multi-source Scraping, Statistical Trend Velocity, and ATS Skill Matching",
     version="1.0.0",
     lifespan=lifespan
 )
@@ -126,7 +126,7 @@ app.include_router(collect.router, prefix="/api", tags=["collect"])
 async def root():
     return {
         "status": "ok", 
-        "service": "TrendRadar-AI",
+        "service": "WebPulse AI",
         "documentation": "/docs"
     }
 

@@ -34,8 +34,8 @@ export default function Header({
             <Radar size={24} color="#06b6d4" />
           </div>
           <div>
-            <h1 className="brand-title">TrendRadar AI</h1>
-            <p className="brand-subtitle">WebPulse Intelligence • 5 Sources Connected • Multi-Agent Pipeline</p>
+            <h1 className="brand-title">WebPulse AI</h1>
+            <p className="brand-subtitle">Real-Time Web Trend & Intelligence Tracker • 5 Sources Connected</p>
           </div>
         </div>
 

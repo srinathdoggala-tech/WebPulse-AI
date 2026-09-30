@@ -1,20 +1,22 @@
-# TrendRadar AI (WebPulse)
-> **Autonomous Community Intelligence & Opportunity Radar**: Multi-source web scraping, real-time topic velocity tracking, AI sentiment & categorization, and ATS resume skill-gap matching.
+# WebPulse AI: Real-Time Web Trend & Intelligence Tracker
+> **Autonomous Community Intelligence & Opportunity Radar**: Multi-source web scraping, statistical topic velocity tracking, AI sentiment & categorization, and ATS resume skill-gap matching.
 
 ---
 
 ## 🌟 Overview & Emergent Demonstration Signals
 
-**TrendRadar AI** is a full-stack, production-grade intelligence platform engineered to track, analyze, and synthesize emerging technology shifts and job opportunities across the developer ecosystem.
+**WebPulse AI** is a full-stack, production-grade intelligence platform engineered to track, analyze, and synthesize emerging technology shifts and job opportunities across the developer ecosystem.
 
-Rather than a simple proof-of-concept, this project demonstrates end-to-end engineering excellence across critical resume capabilities:
+Rather than relying on opaque LLM predictions to guess "what is trending", WebPulse AI strictly decouples **understanding** from **measurement**:
+- **LLM / NLP Layer → Understanding**: Extracts semantic topics, normalized taxonomy categories, sentiment polarity, and market opportunity signals.
+- **Statistical Engine → Trend Measurement**: Computes rigorous quantitative trend scores using actual volume, exponential recency half-life, cross-source diversity multipliers, and historical velocity.
 
-| Emergent Signal | Implementation in TrendRadar AI |
+| Emergent Signal | Implementation in WebPulse AI |
 | :--- | :--- |
 | **Python Scraper & Collectors** | Multi-source asynchronous collectors for **Hacker News (Firebase API)**, **GitHub (Search API)**, **Reddit (JSON feeds)**, **ArXiv / Tech News (RSS)**, and **ATS Job Boards (Greenhouse/Lever/Ashby)**. |
 | **Tracker & Historical State** | Topic velocity calculus (`% 24h acceleration`), breakout novelty detection, historical database snapshots, and SQLite persistence. |
 | **Real-World Data Ingestion** | Robust normalization pipeline with title sanitization, HTML stripping, category classification, and SHA-256 content deduplication. |
-| **AI & NLP Analysis** | Technical entity clustering, sentiment polarity scoring, dynamic trend scoring algorithm (`engagement * recency * cross-source factor`), and executive AI intelligence digest. |
+| **AI & NLP Analysis** | Technical entity clustering, sentiment polarity scoring, dynamic trend scoring algorithm (`(engagement * recency) * source_diversity`), and executive AI intelligence digest. |
 | **Job & Opportunity Intelligence** | Automated ATS job parser, candidate skill extractor, weighted match scorer, and interactive skill-gap analysis (missing skills highlight). |
 | **Full-Stack & APIs** | FastAPI backend with modular REST routers (`/api/trends`, `/api/feed`, `/api/jobs`, `/api/stats`, `/api/summary`, `/api/collect`) + React frontend with glassmorphism, responsive grid, and live collector triggers. |
 

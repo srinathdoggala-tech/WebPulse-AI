@@ -27,7 +27,7 @@ function Navigation() {
         <div className="flex items-center gap-8">
           <Link to="/" className="text-xl font-extrabold text-primary flex items-center gap-2">
             <span className="w-3 h-3 rounded-full bg-primary animate-pulse"></span>
-            TrendRadar AI
+            WebPulse AI
           </Link>
 
           <div className="hidden md:flex items-center gap-1">
