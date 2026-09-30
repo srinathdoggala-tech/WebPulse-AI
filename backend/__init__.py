@@ -1,0 +1,1 @@
+"""TrendRadar-AI - Backend package for data collection, normalization, and AI analysis."""
